@@ -1,0 +1,36 @@
+name: Update Cask
+
+on:
+  repository_dispatch:
+    types: [update-cask]
+
+jobs:
+  update:
+    name: Update Cask Formula
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: true
+
+      - name: Update keypunch cask
+        env:
+          CASK_VERSION: ${{ github.event.client_payload.version }}
+          CASK_SHA256: ${{ github.event.client_payload.sha256 }}
+        run: |
+          sed -i "s/version \".*\"/version \"${CASK_VERSION}\"/" Casks/keypunch.rb
+          sed -i "s/sha256 \".*\"/sha256 \"${CASK_SHA256}\"/" Casks/keypunch.rb
+          cat Casks/keypunch.rb
+
+      - name: Commit and push
+        env:
+          CASK_VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/keypunch.rb
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "bump keypunch to ${CASK_VERSION}"
+          git push
