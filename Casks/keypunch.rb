@@ -1,6 +1,6 @@
 cask "keypunch" do
   version "0.0.1"
-  sha256 "PLACEHOLDER"
+  sha256 "73b8eb1065db7ea72fdd2497ba81a6f13946cd0036df49181fa1f24ef136432c"
 
   url "https://github.com/mkusaka/keypunch/releases/download/v#{version}/Keypunch.zip"
   name "Keypunch"
