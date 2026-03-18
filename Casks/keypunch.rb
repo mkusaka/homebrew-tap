@@ -1,6 +1,6 @@
 cask "keypunch" do
-  version "0.0.4"
-  sha256 "2fdc8db043edfc66e68be3786b7cb70ac22572c5ef403e984a1a0ff96a4d1b30"
+  version "0.0.5"
+  sha256 "d6605046a26489eaa521c40ba337c20fba0d845eaacbc20bcab9d814dd3503fc"
 
   url "https://github.com/mkusaka/keypunch/releases/download/v#{version}/Keypunch.zip"
   name "Keypunch"
