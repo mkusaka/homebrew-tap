@@ -15,14 +15,25 @@ jobs:
         with:
           persist-credentials: true
 
-      - name: Update keypunch cask
+      - name: Resolve cask path
+        env:
+          CASK_NAME: ${{ github.event.client_payload.cask || 'keypunch' }}
+        run: |
+          echo "CASK_NAME=$CASK_NAME" >> "$GITHUB_ENV"
+          echo "CASK_PATH=Casks/${CASK_NAME}.rb" >> "$GITHUB_ENV"
+          if [[ ! -f "Casks/${CASK_NAME}.rb" ]]; then
+            echo "::error::Missing cask file Casks/${CASK_NAME}.rb"
+            exit 1
+          fi
+
+      - name: Update cask
         env:
           CASK_VERSION: ${{ github.event.client_payload.version }}
           CASK_SHA256: ${{ github.event.client_payload.sha256 }}
         run: |
-          sed -i "s/version \".*\"/version \"${CASK_VERSION}\"/" Casks/keypunch.rb
-          sed -i "s/sha256 \".*\"/sha256 \"${CASK_SHA256}\"/" Casks/keypunch.rb
-          cat Casks/keypunch.rb
+          sed -i "s/version \".*\"/version \"${CASK_VERSION}\"/" "$CASK_PATH"
+          sed -i "s/sha256 \".*\"/sha256 \"${CASK_SHA256}\"/" "$CASK_PATH"
+          cat "$CASK_PATH"
 
       - name: Commit and push
         env:
@@ -30,7 +41,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Casks/keypunch.rb
+          git add "$CASK_PATH"
           git diff --cached --quiet && echo "No changes" && exit 0
-          git commit -m "bump keypunch to ${CASK_VERSION}"
+          git commit -m "bump ${CASK_NAME} to ${CASK_VERSION}"
           git push
