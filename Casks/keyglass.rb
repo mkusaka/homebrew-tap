@@ -1,7 +1,7 @@
 cask "keyglass" do
   # Release automation replaces these placeholders after the first notarized tag.
-  version "0.0.11"
-  sha256 "5f120d947b9d9fc0c22249e17b1a95afb4c532c78f02877dd969c3240918f5f6"
+  version "0.0.12"
+  sha256 "2e6a4a6205d85fc167a4a288b2243b39eacba9174594a9efd84b1f87e3662e1a"
 
   url "https://github.com/mkusaka/KeyGlass/releases/download/v#{version}/KeyGlass.zip"
   name "KeyGlass"
