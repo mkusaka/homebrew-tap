@@ -1,6 +1,6 @@
 cask "tabora" do
-  version "0.0.3"
-  sha256 "900fa2da883deefab9f288e126868990abe14e6c40641ef22a820c7d93ab8d82"
+  version "0.0.4"
+  sha256 "5a1f14c281e571961816445943fa21e6a3dd6c82b22245cd1a1a2eabae2263b5"
 
   url "https://github.com/mkusaka/Tabora/releases/download/v#{version}/Tabora.zip"
   name "Tabora"
