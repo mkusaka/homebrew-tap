@@ -37,6 +37,7 @@ jobs:
           path = ENV.fetch("FORMULA_PATH")
           text = File.read(path)
 
+          text.sub!(/^  url ".*"$/, %(  url "https://github.com/mkusaka/ccost/archive/refs/tags/v#{ENV.fetch("FORMULA_VERSION")}.tar.gz"))
           text.sub!(/^  version ".*"$/, %(  version "#{ENV.fetch("FORMULA_VERSION")}"))
           text.sub!(/^  sha256 "[0-9a-f]{64}"$/, %(  sha256 "#{ENV.fetch("FORMULA_SOURCE_SHA256")}"))
           text.sub!(/^    root_url ".*"$/, %(    root_url "https://github.com/mkusaka/ccost/releases/download/v#{ENV.fetch("FORMULA_VERSION")}"))
