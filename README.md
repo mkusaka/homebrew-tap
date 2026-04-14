@@ -8,6 +8,26 @@ Custom Homebrew tap for mkusaka's applications.
 brew tap mkusaka/tap
 ```
 
+## Available Formulae
+
+| Formula | Description |
+|---------|-------------|
+| `ccost` | Claude Code, Codex, and OpenCode usage cost reporter |
+
+### Install Formulae
+
+```bash
+brew install mkusaka/tap/ccost
+```
+
+Tagged releases publish bottles for Apple Silicon and Intel Macs. Until the
+first tagged release is published, or on unsupported platforms, you can
+install from `HEAD`:
+
+```bash
+brew install --HEAD mkusaka/tap/ccost
+```
+
 ## Available Casks
 
 | Cask | Description |
@@ -16,7 +36,7 @@ brew tap mkusaka/tap
 | `keypunch` | macOS menu bar app that launches applications via global keyboard shortcuts |
 | `tabora` | macOS window switcher with window-level previews and keyboard navigation |
 
-### Install
+### Install Casks
 
 ```bash
 brew install --cask mkusaka/tap/keyglass
@@ -27,6 +47,7 @@ brew install --cask mkusaka/tap/tabora
 ### Uninstall
 
 ```bash
+brew uninstall ccost
 brew uninstall --cask keyglass
 brew uninstall --cask keypunch
 brew uninstall --cask tabora
