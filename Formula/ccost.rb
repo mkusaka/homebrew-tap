@@ -2,9 +2,9 @@ class Ccost < Formula
   desc "Claude Code, Codex, and OpenCode usage cost reporter"
   homepage "https://github.com/mkusaka/ccost"
   # Release automation replaces these placeholders after the first tagged release.
-  url "https://github.com/mkusaka/ccost/archive/refs/tags/v0.1.2.tar.gz"
+  url "https://github.com/mkusaka/ccost/archive/refs/tags/v0.1.3.tar.gz"
   version "0.1.2"
-  sha256 "188c3505550ca9fd275a8509d080d7a165a3b7619bb1843ed4c4ba1f8e475192"
+  sha256 "853a1820c1f91945a78193d5bd3db89f6e46e73fce8f22491e8e79f8e31fec3f"
   license "MIT"
   head "https://github.com/mkusaka/ccost.git", branch: "main"
 
