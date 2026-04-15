@@ -30,6 +30,8 @@ jobs:
         env:
           FORMULA_VERSION: ${{ github.event.client_payload.version }}
           FORMULA_SOURCE_SHA256: ${{ github.event.client_payload.source_sha256 }}
+          FORMULA_ARM64_TAHOE_SHA256: ${{ github.event.client_payload.arm64_tahoe_sha256 }}
+          FORMULA_TAHOE_SHA256: ${{ github.event.client_payload.tahoe_sha256 }}
           FORMULA_ARM64_SEQUOIA_SHA256: ${{ github.event.client_payload.arm64_sequoia_sha256 }}
           FORMULA_SEQUOIA_SHA256: ${{ github.event.client_payload.sequoia_sha256 }}
         run: |
@@ -41,6 +43,8 @@ jobs:
           text.sub!(/^  version ".*"$/, %(  version "#{ENV.fetch("FORMULA_VERSION")}"))
           text.sub!(/^  sha256 "[0-9a-f]{64}"$/, %(  sha256 "#{ENV.fetch("FORMULA_SOURCE_SHA256")}"))
           text.sub!(/^    root_url ".*"$/, %(    root_url "https://github.com/mkusaka/ccost/releases/download/v#{ENV.fetch("FORMULA_VERSION")}"))
+          text.sub!(/^    sha256 arm64_tahoe: ".*"$/, %(    sha256 arm64_tahoe: "#{ENV.fetch("FORMULA_ARM64_TAHOE_SHA256")}"))
+          text.sub!(/^    sha256 tahoe: ".*"$/, %(    sha256 tahoe: "#{ENV.fetch("FORMULA_TAHOE_SHA256")}"))
           text.sub!(/^    sha256 arm64_sequoia: ".*"$/, %(    sha256 arm64_sequoia: "#{ENV.fetch("FORMULA_ARM64_SEQUOIA_SHA256")}"))
           text.sub!(/^    sha256 sequoia: ".*"$/, %(    sha256 sequoia: "#{ENV.fetch("FORMULA_SEQUOIA_SHA256")}"))
 

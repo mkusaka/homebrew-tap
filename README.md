@@ -20,9 +20,9 @@ brew tap mkusaka/tap
 brew install mkusaka/tap/ccost
 ```
 
-Tagged releases publish bottles for Apple Silicon and Intel Macs. Until the
-first tagged release is published, or on unsupported platforms, you can
-install from `HEAD`:
+Tagged releases publish bottles for Apple Silicon and Intel Macs on macOS
+Sequoia 15 and Tahoe 26. Until the first tagged release is published, or on
+unsupported platforms, you can install from `HEAD`:
 
 ```bash
 brew install --HEAD mkusaka/tap/ccost
