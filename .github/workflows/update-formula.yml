@@ -18,8 +18,10 @@ jobs:
       - name: Resolve formula path
         env:
           FORMULA_NAME: ${{ github.event.client_payload.formula || 'ccost' }}
+          FORMULA_REPOSITORY: ${{ github.event.client_payload.repository || 'mkusaka/ccost' }}
         run: |
           echo "FORMULA_NAME=$FORMULA_NAME" >> "$GITHUB_ENV"
+          echo "FORMULA_REPOSITORY=$FORMULA_REPOSITORY" >> "$GITHUB_ENV"
           echo "FORMULA_PATH=Formula/${FORMULA_NAME}.rb" >> "$GITHUB_ENV"
           if [[ ! -f "Formula/${FORMULA_NAME}.rb" ]]; then
             echo "::error::Missing formula file Formula/${FORMULA_NAME}.rb"
@@ -28,7 +30,10 @@ jobs:
 
       - name: Update formula
         env:
+          FORMULA_REPOSITORY: ${{ env.FORMULA_REPOSITORY }}
           FORMULA_VERSION: ${{ github.event.client_payload.version }}
+          FORMULA_SOURCE_URL: ${{ github.event.client_payload.source_url }}
+          FORMULA_RELEASE_URL: ${{ github.event.client_payload.release_url }}
           FORMULA_SOURCE_SHA256: ${{ github.event.client_payload.source_sha256 }}
           FORMULA_ARM64_TAHOE_SHA256: ${{ github.event.client_payload.arm64_tahoe_sha256 }}
           FORMULA_TAHOE_SHA256: ${{ github.event.client_payload.tahoe_sha256 }}
@@ -38,11 +43,20 @@ jobs:
           ruby <<'RUBY'
           path = ENV.fetch("FORMULA_PATH")
           text = File.read(path)
+          repository = ENV.fetch("FORMULA_REPOSITORY")
+          version = ENV.fetch("FORMULA_VERSION")
+          source_url = ENV["FORMULA_SOURCE_URL"]
+          release_url = ENV["FORMULA_RELEASE_URL"]
 
-          text.sub!(/^  url ".*"$/, %(  url "https://github.com/mkusaka/ccost/archive/refs/tags/v#{ENV.fetch("FORMULA_VERSION")}.tar.gz"))
-          text.sub!(/^  version ".*"$/, %(  version "#{ENV.fetch("FORMULA_VERSION")}"))
+          source_url = "https://github.com/#{repository}/archive/refs/tags/v#{version}.tar.gz" if source_url.nil? || source_url.empty?
+          release_url = "https://github.com/#{repository}/releases/download/v#{version}" if release_url.nil? || release_url.empty?
+
+          text.sub!(/^  homepage ".*"$/, %(  homepage "https://github.com/#{repository}"))
+          text.sub!(/^  url ".*"$/, %(  url "#{source_url}"))
+          text.sub!(/^  version ".*"$/, %(  version "#{version}"))
           text.sub!(/^  sha256 "[0-9a-f]{64}"$/, %(  sha256 "#{ENV.fetch("FORMULA_SOURCE_SHA256")}"))
-          text.sub!(/^    root_url ".*"$/, %(    root_url "https://github.com/mkusaka/ccost/releases/download/v#{ENV.fetch("FORMULA_VERSION")}"))
+          text.sub!(/^  head ".*", branch: ".*"$/, %(  head "https://github.com/#{repository}.git", branch: "main"))
+          text.sub!(/^    root_url ".*"$/, %(    root_url "#{release_url}"))
           text.sub!(/^    sha256 arm64_tahoe: ".*"$/, %(    sha256 arm64_tahoe: "#{ENV.fetch("FORMULA_ARM64_TAHOE_SHA256")}"))
           text.sub!(/^    sha256 tahoe: ".*"$/, %(    sha256 tahoe: "#{ENV.fetch("FORMULA_TAHOE_SHA256")}"))
           text.sub!(/^    sha256 arm64_sequoia: ".*"$/, %(    sha256 arm64_sequoia: "#{ENV.fetch("FORMULA_ARM64_SEQUOIA_SHA256")}"))

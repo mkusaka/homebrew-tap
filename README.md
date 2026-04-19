@@ -13,11 +13,13 @@ brew tap mkusaka/tap
 | Formula | Description |
 |---------|-------------|
 | `ccost` | Claude Code, Codex, and OpenCode usage cost reporter |
+| `tk` | Standalone Rust CLI for persistent structured task lists |
 
 ### Install Formulae
 
 ```bash
 brew install mkusaka/tap/ccost
+brew install mkusaka/tap/tk
 ```
 
 Tagged releases publish bottles for Apple Silicon and Intel Macs on macOS
@@ -26,6 +28,7 @@ unsupported platforms, you can install from `HEAD`:
 
 ```bash
 brew install --HEAD mkusaka/tap/ccost
+brew install --HEAD mkusaka/tap/tk
 ```
 
 ## Available Casks
@@ -48,6 +51,7 @@ brew install --cask mkusaka/tap/tabora
 
 ```bash
 brew uninstall ccost
+brew uninstall tk
 brew uninstall --cask keyglass
 brew uninstall --cask keypunch
 brew uninstall --cask tabora
