@@ -39,28 +39,59 @@ jobs:
           FORMULA_TAHOE_SHA256: ${{ github.event.client_payload.tahoe_sha256 }}
           FORMULA_ARM64_SEQUOIA_SHA256: ${{ github.event.client_payload.arm64_sequoia_sha256 }}
           FORMULA_SEQUOIA_SHA256: ${{ github.event.client_payload.sequoia_sha256 }}
+          FORMULA_DARWIN_ARM64_URL: ${{ github.event.client_payload.darwin_arm64_url }}
+          FORMULA_DARWIN_ARM64_SHA256: ${{ github.event.client_payload.darwin_arm64_sha256 }}
+          FORMULA_DARWIN_X64_URL: ${{ github.event.client_payload.darwin_x64_url }}
+          FORMULA_DARWIN_X64_SHA256: ${{ github.event.client_payload.darwin_x64_sha256 }}
         run: |
           ruby <<'RUBY'
           path = ENV.fetch("FORMULA_PATH")
           text = File.read(path)
           repository = ENV.fetch("FORMULA_REPOSITORY")
           version = ENV.fetch("FORMULA_VERSION")
-          source_url = ENV["FORMULA_SOURCE_URL"]
-          release_url = ENV["FORMULA_RELEASE_URL"]
-
-          source_url = "https://github.com/#{repository}/archive/refs/tags/v#{version}.tar.gz" if source_url.nil? || source_url.empty?
-          release_url = "https://github.com/#{repository}/releases/download/v#{version}" if release_url.nil? || release_url.empty?
-
           text.sub!(/^  homepage ".*"$/, %(  homepage "https://github.com/#{repository}"))
-          text.sub!(/^  url ".*"$/, %(  url "#{source_url}"))
           text.sub!(/^  version ".*"$/, %(  version "#{version}"))
-          text.sub!(/^  sha256 "[0-9a-f]{64}"$/, %(  sha256 "#{ENV.fetch("FORMULA_SOURCE_SHA256")}"))
           text.sub!(/^  head ".*", branch: ".*"$/, %(  head "https://github.com/#{repository}.git", branch: "main"))
-          text.sub!(/^    root_url ".*"$/, %(    root_url "#{release_url}"))
-          text.sub!(/^    sha256 arm64_tahoe: ".*"$/, %(    sha256 arm64_tahoe: "#{ENV.fetch("FORMULA_ARM64_TAHOE_SHA256")}"))
-          text.sub!(/^    sha256 tahoe: ".*"$/, %(    sha256 tahoe: "#{ENV.fetch("FORMULA_TAHOE_SHA256")}"))
-          text.sub!(/^    sha256 arm64_sequoia: ".*"$/, %(    sha256 arm64_sequoia: "#{ENV.fetch("FORMULA_ARM64_SEQUOIA_SHA256")}"))
-          text.sub!(/^    sha256 sequoia: ".*"$/, %(    sha256 sequoia: "#{ENV.fetch("FORMULA_SEQUOIA_SHA256")}"))
+
+          binary_formula = [
+            ENV["FORMULA_DARWIN_ARM64_URL"],
+            ENV["FORMULA_DARWIN_ARM64_SHA256"],
+            ENV["FORMULA_DARWIN_X64_URL"],
+            ENV["FORMULA_DARWIN_X64_SHA256"],
+          ].all? { |value| !value.nil? && !value.empty? }
+
+          if binary_formula
+            on_macos_block = <<~RUBY.chomp
+              on_macos do
+                if Hardware::CPU.arm?
+                  url "#{ENV.fetch("FORMULA_DARWIN_ARM64_URL")}"
+                  sha256 "#{ENV.fetch("FORMULA_DARWIN_ARM64_SHA256")}"
+                else
+                  url "#{ENV.fetch("FORMULA_DARWIN_X64_URL")}"
+                  sha256 "#{ENV.fetch("FORMULA_DARWIN_X64_SHA256")}"
+                end
+              end
+            RUBY
+
+            text.sub!(
+              /  on_macos do\n    if Hardware::CPU\.arm\?\n      url ".*"\n      sha256 ".*"\n    else\n      url ".*"\n      sha256 ".*"\n    end\n  end/m,
+              on_macos_block,
+            )
+          else
+            source_url = ENV["FORMULA_SOURCE_URL"]
+            release_url = ENV["FORMULA_RELEASE_URL"]
+
+            source_url = "https://github.com/#{repository}/archive/refs/tags/v#{version}.tar.gz" if source_url.nil? || source_url.empty?
+            release_url = "https://github.com/#{repository}/releases/download/v#{version}" if release_url.nil? || release_url.empty?
+
+            text.sub!(/^  url ".*"$/, %(  url "#{source_url}"))
+            text.sub!(/^  sha256 "[0-9a-f]{64}"$/, %(  sha256 "#{ENV.fetch("FORMULA_SOURCE_SHA256")}"))
+            text.sub!(/^    root_url ".*"$/, %(    root_url "#{release_url}"))
+            text.sub!(/^    sha256 arm64_tahoe: ".*"$/, %(    sha256 arm64_tahoe: "#{ENV.fetch("FORMULA_ARM64_TAHOE_SHA256")}"))
+            text.sub!(/^    sha256 tahoe: ".*"$/, %(    sha256 tahoe: "#{ENV.fetch("FORMULA_TAHOE_SHA256")}"))
+            text.sub!(/^    sha256 arm64_sequoia: ".*"$/, %(    sha256 arm64_sequoia: "#{ENV.fetch("FORMULA_ARM64_SEQUOIA_SHA256")}"))
+            text.sub!(/^    sha256 sequoia: ".*"$/, %(    sha256 sequoia: "#{ENV.fetch("FORMULA_SEQUOIA_SHA256")}"))
+          end
 
           File.write(path, text)
           RUBY
