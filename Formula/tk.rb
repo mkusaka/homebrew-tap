@@ -2,18 +2,18 @@ class Tk < Formula
   desc "Standalone Rust CLI for persistent structured task lists"
   homepage "https://github.com/mkusaka/tk"
   # Release automation replaces these placeholders after the first tagged release.
-  url "https://github.com/mkusaka/tk/archive/refs/tags/v0.0.1.tar.gz"
-  version "0.0.1"
-  sha256 "799587de9dbb899c14d11c151eafdb1ae07b420a62604ad0b876e832f726bbe9"
+  url "https://github.com/mkusaka/tk/archive/refs/tags/v0.0.2.tar.gz"
+  version "0.0.2"
+  sha256 "57698d89f1867b397b08c00d351ca002d7502d7e6fc51e978a866ce973b42fd3"
   license "MIT"
   head "https://github.com/mkusaka/tk.git", branch: "main"
 
   bottle do
-    root_url "https://github.com/mkusaka/tk/releases/download/v0.0.1"
-    sha256 arm64_tahoe: "223790ae4d285822b0ade33eb9c79c94e3d7a106b5fe1b49d2f80a72a9e4a7b4"
-    sha256 tahoe: "0d90f20aa7561e80445eb3df7f4b9df9ce4d2c7b42f764b887abac1bfe89010c"
-    sha256 arm64_sequoia: "8df1e54b4addcc81d5e9c7d208614c4e1f3128357210192a4ef17aaa5c5ccf56"
-    sha256 sequoia: "551efac21835f64535912681b74364a53b2c8ac0ecee820ca69ff039fa7783f5"
+    root_url "https://github.com/mkusaka/tk/releases/download/v0.0.2"
+    sha256 arm64_tahoe: "42d26ae5ba84f619c09ff05ea43768fc7fd49a23d29a6754706511421a1f57eb"
+    sha256 tahoe: "749b95191b9b4bdb58481eee38d0a12c1bef26b318a5cd9f7013e661f8395c0d"
+    sha256 arm64_sequoia: "645bc9979a15dafd31e7ac768a39899b8f3de247ba0e44cb4aa3311727ea6732"
+    sha256 sequoia: "7cdbaf61fd0b700c56cf6068a6fb28a4822c74026a04a2bb7653ba79dfbda95d"
   end
 
   depends_on "rust" => :build
