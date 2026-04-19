@@ -3,17 +3,17 @@ class Gtk < Formula
   homepage "https://github.com/mkusaka/gtk"
   license "MIT"
 
-  on_macos do
-    if Hardware::CPU.arm?
-      url "__DARWIN_ARM64_URL__"
-      sha256 "__DARWIN_ARM64_SHA256__"
-    else
-      url "__DARWIN_X64_URL__"
-      sha256 "__DARWIN_X64_SHA256__"
-    end
+on_macos do
+  if Hardware::CPU.arm?
+    url "https://github.com/mkusaka/gtk/releases/download/v0.0.1/gtk-0.0.1-darwin-arm64.tar.gz"
+    sha256 "e7387f794e3568a9bc7cc283efe8f5ffa6bb7084efe240cbd52e8c4d5175de2c"
+  else
+    url "https://github.com/mkusaka/gtk/releases/download/v0.0.1/gtk-0.0.1-darwin-x64.tar.gz"
+    sha256 "d1e5151e602af8ced9d1667a6e5bb155a127bf2cbeac8e51564be0f16c33610a"
   end
+end
 
-  version "__VERSION__"
+  version "0.0.1"
   head "https://github.com/mkusaka/gtk.git", branch: "main"
 
   head do
