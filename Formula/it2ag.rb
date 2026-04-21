@@ -13,7 +13,7 @@ on_macos do
   end
 end
 
-  version "0.0.2"
+  version "0.0.4"
 
   def install
     libexec.install Dir["*"]
