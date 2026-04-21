@@ -5,15 +5,15 @@ class It2ag < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/mkusaka/it2ag/releases/download/v0.0.4/it2ag-0.0.4-darwin-arm64.tar.gz"
-      sha256 "8c8c0cf0dfdb89909540a23aea4f3a2d4ab6557cf0e8acec56e64dabf7cf756c"
+      url "https://github.com/mkusaka/it2ag/releases/download/v0.0.6/it2ag-0.0.6-darwin-arm64.tar.gz"
+      sha256 "434aed7e81321abc01f1d6150e568e5f0411d932477e988fc92c875da1e4107a"
     else
-      url "https://github.com/mkusaka/it2ag/releases/download/v0.0.4/it2ag-0.0.4-darwin-x64.tar.gz"
-      sha256 "bf236453beec4f48d72475f880e7c1e07ab380abf3a8585d75796627df360cfa"
+      url "https://github.com/mkusaka/it2ag/releases/download/v0.0.6/it2ag-0.0.6-darwin-x64.tar.gz"
+      sha256 "8202051db52c02636e3570d2bde66cb68409300a23344fdb5e8dcde2854f521a"
     end
   end
 
-  version "0.0.4"
+  version "0.0.6"
 
   def install
     libexec.install Dir["*"]
