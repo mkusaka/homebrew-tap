@@ -3,15 +3,15 @@ class It2ag < Formula
   homepage "https://github.com/mkusaka/it2ag"
   license "GPL-2.0-or-later"
 
-on_macos do
-  if Hardware::CPU.arm?
-    url "https://github.com/mkusaka/it2ag/releases/download/v0.0.2/it2ag-0.0.2-darwin-arm64.tar.gz"
-    sha256 "a518da3990a30088a8e43a08856bab266f9ca0770129b30e31d087353a557ac6"
-  else
-    url "https://github.com/mkusaka/it2ag/releases/download/v0.0.2/it2ag-0.0.2-darwin-x64.tar.gz"
-    sha256 "a739a2032fa6d4b5414f425fe6890a193dae3da0bb6c8cb80aac4fbab5b5a37d"
+  on_macos do
+    if Hardware::CPU.arm?
+      url "https://github.com/mkusaka/it2ag/releases/download/v0.0.4/it2ag-0.0.4-darwin-arm64.tar.gz"
+      sha256 "8c8c0cf0dfdb89909540a23aea4f3a2d4ab6557cf0e8acec56e64dabf7cf756c"
+    else
+      url "https://github.com/mkusaka/it2ag/releases/download/v0.0.4/it2ag-0.0.4-darwin-x64.tar.gz"
+      sha256 "bf236453beec4f48d72475f880e7c1e07ab380abf3a8585d75796627df360cfa"
+    end
   end
-end
 
   version "0.0.4"
 

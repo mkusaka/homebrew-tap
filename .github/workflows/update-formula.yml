@@ -32,6 +32,7 @@ jobs:
         env:
           FORMULA_REPOSITORY: ${{ env.FORMULA_REPOSITORY }}
           FORMULA_VERSION: ${{ github.event.client_payload.version }}
+          FORMULA_CONTENTS_B64: ${{ github.event.client_payload.formula_contents_b64 }}
           FORMULA_SOURCE_URL: ${{ github.event.client_payload.source_url }}
           FORMULA_RELEASE_URL: ${{ github.event.client_payload.release_url }}
           FORMULA_SOURCE_SHA256: ${{ github.event.client_payload.source_sha256 }}
@@ -45,58 +46,163 @@ jobs:
           FORMULA_DARWIN_X64_SHA256: ${{ github.event.client_payload.darwin_x64_sha256 }}
         run: |
           ruby <<'RUBY'
-          path = ENV.fetch("FORMULA_PATH")
-          text = File.read(path)
-          repository = ENV.fetch("FORMULA_REPOSITORY")
-          version = ENV.fetch("FORMULA_VERSION")
-          text.sub!(/^  homepage ".*"$/, %(  homepage "https://github.com/#{repository}"))
-          text.sub!(/^  version ".*"$/, %(  version "#{version}"))
-          text.sub!(/^  head ".*", branch: ".*"$/, %(  head "https://github.com/#{repository}.git", branch: "main"))
+          require "base64"
 
-          binary_formula = [
-            ENV["FORMULA_DARWIN_ARM64_URL"],
-            ENV["FORMULA_DARWIN_ARM64_SHA256"],
-            ENV["FORMULA_DARWIN_X64_URL"],
-            ENV["FORMULA_DARWIN_X64_SHA256"],
-          ].all? { |value| !value.nil? && !value.empty? }
+          def replace_once(text, pattern, replacement, label, path)
+            updated = text.dup
+            replaced = updated.sub!(pattern, replacement)
+            raise "#{label} replacement failed for #{path}" if replaced.nil?
 
-          if binary_formula
-            on_macos_block = <<~RUBY.chomp
-              on_macos do
-                if Hardware::CPU.arm?
-                  url "#{ENV.fetch("FORMULA_DARWIN_ARM64_URL")}"
-                  sha256 "#{ENV.fetch("FORMULA_DARWIN_ARM64_SHA256")}"
-                else
-                  url "#{ENV.fetch("FORMULA_DARWIN_X64_URL")}"
-                  sha256 "#{ENV.fetch("FORMULA_DARWIN_X64_SHA256")}"
-                end
-              end
-            RUBY
-
-            text.sub!(
-              /  on_macos do\n    if Hardware::CPU\.arm\?\n      url ".*"\n      sha256 ".*"\n    else\n      url ".*"\n      sha256 ".*"\n    end\n  end/m,
-              on_macos_block,
-            )
-          else
-            source_url = ENV["FORMULA_SOURCE_URL"]
-            release_url = ENV["FORMULA_RELEASE_URL"]
-
-            source_url = "https://github.com/#{repository}/archive/refs/tags/v#{version}.tar.gz" if source_url.nil? || source_url.empty?
-            release_url = "https://github.com/#{repository}/releases/download/v#{version}" if release_url.nil? || release_url.empty?
-
-            text.sub!(/^  url ".*"$/, %(  url "#{source_url}"))
-            text.sub!(/^  sha256 "[0-9a-f]{64}"$/, %(  sha256 "#{ENV.fetch("FORMULA_SOURCE_SHA256")}"))
-            text.sub!(/^    root_url ".*"$/, %(    root_url "#{release_url}"))
-            text.sub!(/^    sha256 arm64_tahoe: ".*"$/, %(    sha256 arm64_tahoe: "#{ENV.fetch("FORMULA_ARM64_TAHOE_SHA256")}"))
-            text.sub!(/^    sha256 tahoe: ".*"$/, %(    sha256 tahoe: "#{ENV.fetch("FORMULA_TAHOE_SHA256")}"))
-            text.sub!(/^    sha256 arm64_sequoia: ".*"$/, %(    sha256 arm64_sequoia: "#{ENV.fetch("FORMULA_ARM64_SEQUOIA_SHA256")}"))
-            text.sub!(/^    sha256 sequoia: ".*"$/, %(    sha256 sequoia: "#{ENV.fetch("FORMULA_SEQUOIA_SHA256")}"))
+            updated
           end
+
+          def replace_if_present(text, pattern, replacement)
+            updated = text.dup
+            updated.sub!(pattern, replacement)
+            updated
+          end
+
+          path = ENV.fetch("FORMULA_PATH")
+          formula_contents_b64 = ENV["FORMULA_CONTENTS_B64"]
+
+          text =
+            if !formula_contents_b64.nil? && !formula_contents_b64.empty?
+              Base64.decode64(formula_contents_b64)
+            else
+              current_text = File.read(path)
+              repository = ENV.fetch("FORMULA_REPOSITORY")
+              version = ENV.fetch("FORMULA_VERSION")
+
+              current_text = replace_once(
+                current_text,
+                /^  homepage ".*"$/,
+                %(  homepage "https://github.com/#{repository}"),
+                "homepage",
+                path,
+              )
+              current_text = replace_once(
+                current_text,
+                /^  version ".*"$/,
+                %(  version "#{version}"),
+                "version",
+                path,
+              )
+              current_text = replace_if_present(
+                current_text,
+                /^  head ".*", branch: ".*"$/,
+                %(  head "https://github.com/#{repository}.git", branch: "main"),
+              )
+
+              binary_formula = [
+                ENV["FORMULA_DARWIN_ARM64_URL"],
+                ENV["FORMULA_DARWIN_ARM64_SHA256"],
+                ENV["FORMULA_DARWIN_X64_URL"],
+                ENV["FORMULA_DARWIN_X64_SHA256"],
+              ].all? { |value| !value.nil? && !value.empty? }
+
+              if binary_formula
+                on_macos_block = <<~RUBY.chomp
+                  on_macos do
+                    if Hardware::CPU.arm?
+                      url "#{ENV.fetch("FORMULA_DARWIN_ARM64_URL")}"
+                      sha256 "#{ENV.fetch("FORMULA_DARWIN_ARM64_SHA256")}"
+                    else
+                      url "#{ENV.fetch("FORMULA_DARWIN_X64_URL")}"
+                      sha256 "#{ENV.fetch("FORMULA_DARWIN_X64_SHA256")}"
+                    end
+                  end
+                RUBY
+
+                current_text = replace_once(
+                  current_text,
+                  /^\s*on_macos do\n\s*if Hardware::CPU\.arm\?\n\s*url "[^\n]*"\n\s*sha256 "[^\n]*"\n\s*else\n\s*url "[^\n]*"\n\s*sha256 "[^\n]*"\n\s*end\n\s*end/,
+                  on_macos_block,
+                  "on_macos",
+                  path,
+                )
+              else
+                source_url = ENV["FORMULA_SOURCE_URL"]
+                release_url = ENV["FORMULA_RELEASE_URL"]
+
+                source_url = "https://github.com/#{repository}/archive/refs/tags/v#{version}.tar.gz" if source_url.nil? || source_url.empty?
+                release_url = "https://github.com/#{repository}/releases/download/v#{version}" if release_url.nil? || release_url.empty?
+
+                current_text = replace_once(
+                  current_text,
+                  /^  url ".*"$/,
+                  %(  url "#{source_url}"),
+                  "url",
+                  path,
+                )
+                current_text = replace_once(
+                  current_text,
+                  /^  sha256 ".*"$/,
+                  %(  sha256 "#{ENV.fetch("FORMULA_SOURCE_SHA256")}"),
+                  "sha256",
+                  path,
+                )
+                current_text = replace_once(
+                  current_text,
+                  /^    root_url ".*"$/,
+                  %(    root_url "#{release_url}"),
+                  "root_url",
+                  path,
+                )
+                current_text = replace_once(
+                  current_text,
+                  /^    sha256 arm64_tahoe: ".*"$/,
+                  %(    sha256 arm64_tahoe: "#{ENV.fetch("FORMULA_ARM64_TAHOE_SHA256")}"),
+                  "arm64_tahoe_sha256",
+                  path,
+                )
+                current_text = replace_once(
+                  current_text,
+                  /^    sha256 tahoe: ".*"$/,
+                  %(    sha256 tahoe: "#{ENV.fetch("FORMULA_TAHOE_SHA256")}"),
+                  "tahoe_sha256",
+                  path,
+                )
+                current_text = replace_once(
+                  current_text,
+                  /^    sha256 arm64_sequoia: ".*"$/,
+                  %(    sha256 arm64_sequoia: "#{ENV.fetch("FORMULA_ARM64_SEQUOIA_SHA256")}"),
+                  "arm64_sequoia_sha256",
+                  path,
+                )
+                current_text = replace_once(
+                  current_text,
+                  /^    sha256 sequoia: ".*"$/,
+                  %(    sha256 sequoia: "#{ENV.fetch("FORMULA_SEQUOIA_SHA256")}"),
+                  "sequoia_sha256",
+                  path,
+                )
+              end
+
+              current_text
+            end
 
           File.write(path, text)
           RUBY
 
           cat "$FORMULA_PATH"
+
+      - name: Validate formula
+        env:
+          FORMULA_VERSION: ${{ github.event.client_payload.version }}
+          FORMULA_DARWIN_ARM64_URL: ${{ github.event.client_payload.darwin_arm64_url }}
+          FORMULA_DARWIN_ARM64_SHA256: ${{ github.event.client_payload.darwin_arm64_sha256 }}
+          FORMULA_DARWIN_X64_URL: ${{ github.event.client_payload.darwin_x64_url }}
+          FORMULA_DARWIN_X64_SHA256: ${{ github.event.client_payload.darwin_x64_sha256 }}
+        run: |
+          ruby -c "$FORMULA_PATH"
+          grep -F "version \"$FORMULA_VERSION\"" "$FORMULA_PATH"
+
+          if [[ -n "${FORMULA_DARWIN_ARM64_URL:-}" ]]; then
+            grep -F "$FORMULA_DARWIN_ARM64_URL" "$FORMULA_PATH"
+            grep -F "$FORMULA_DARWIN_ARM64_SHA256" "$FORMULA_PATH"
+            grep -F "$FORMULA_DARWIN_X64_URL" "$FORMULA_PATH"
+            grep -F "$FORMULA_DARWIN_X64_SHA256" "$FORMULA_PATH"
+          fi
 
       - name: Commit and push
         env:
