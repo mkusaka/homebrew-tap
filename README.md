@@ -38,6 +38,7 @@ brew install --HEAD mkusaka/tap/tk
 
 | Cask | Description |
 |------|-------------|
+| `cmod` | macOS menu bar app for Command-key input switching |
 | `keyglass` | macOS menu bar utility for visualizing keyboard and mouse input |
 | `keypunch` | macOS menu bar app that launches applications via global keyboard shortcuts |
 | `tabora` | macOS window switcher with window-level previews and keyboard navigation |
@@ -45,6 +46,7 @@ brew install --HEAD mkusaka/tap/tk
 ### Install Casks
 
 ```bash
+brew install --cask mkusaka/tap/cmod
 brew install --cask mkusaka/tap/keyglass
 brew install --cask mkusaka/tap/keypunch
 brew install --cask mkusaka/tap/tabora
@@ -56,6 +58,7 @@ brew install --cask mkusaka/tap/tabora
 brew uninstall ccost
 brew uninstall gtk
 brew uninstall tk
+brew uninstall --cask cmod
 brew uninstall --cask keyglass
 brew uninstall --cask keypunch
 brew uninstall --cask tabora
