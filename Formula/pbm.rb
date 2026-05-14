@@ -16,7 +16,6 @@ class Pbm < Formula
     sha256 sequoia:       "0000000000000000000000000000000000000000000000000000000000000000"
   end
 
-  depends_on xcode: ["26.0", :build]
   depends_on macos: :sequoia
 
   def install
