@@ -14,6 +14,7 @@ brew tap mkusaka/tap
 |---------|-------------|
 | `ccost` | Claude Code, Codex, and OpenCode usage cost reporter |
 | `gtk` | BYO-credentials Google Tasks CLI |
+| `pbm` | Deterministic macOS desktop automation CLI and MCP server |
 | `tk` | Standalone Rust CLI for persistent structured task lists |
 
 ### Install Formulae
@@ -21,6 +22,7 @@ brew tap mkusaka/tap
 ```bash
 brew install mkusaka/tap/ccost
 brew install mkusaka/tap/gtk
+brew install mkusaka/tap/pbm
 brew install mkusaka/tap/tk
 ```
 
@@ -31,6 +33,7 @@ unsupported platforms, you can install from `HEAD`:
 ```bash
 brew install --HEAD mkusaka/tap/ccost
 brew install --HEAD mkusaka/tap/gtk
+brew install --HEAD mkusaka/tap/pbm
 brew install --HEAD mkusaka/tap/tk
 ```
 
@@ -57,6 +60,7 @@ brew install --cask mkusaka/tap/tabora
 ```bash
 brew uninstall ccost
 brew uninstall gtk
+brew uninstall pbm
 brew uninstall tk
 brew uninstall --cask cmod
 brew uninstall --cask keyglass
