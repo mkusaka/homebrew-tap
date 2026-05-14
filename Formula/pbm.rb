@@ -19,7 +19,14 @@ class Pbm < Formula
   depends_on macos: :sequoia
 
   def install
-    system "xcrun", "swift", "build", "--configuration", "release", "--disable-sandbox"
+    swift_args = ["xcrun", "swift", "build", "--configuration", "release", "--disable-sandbox"]
+    developer_dir = Dir["/Applications/Xcode_26*.app/Contents/Developer"].sort.reverse.first
+
+    if developer_dir
+      system "env", "DEVELOPER_DIR=#{developer_dir}", *swift_args
+    else
+      system *swift_args
+    end
     bin.install ".build/release/pbm"
     (pkgshare/"skills").install "skills/pbm-cli"
   end
