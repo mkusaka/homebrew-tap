@@ -19,7 +19,7 @@ class Pbm < Formula
   depends_on macos: :sequoia
 
   def install
-    system "swift", "build", "--configuration", "release", "--disable-sandbox"
+    system "xcrun", "swift", "build", "--configuration", "release", "--disable-sandbox"
     bin.install ".build/release/pbm"
     (pkgshare/"skills").install "skills/pbm-cli"
   end
