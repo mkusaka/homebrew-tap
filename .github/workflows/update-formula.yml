@@ -20,9 +20,12 @@ jobs:
           FORMULA_NAME: ${{ github.event.client_payload.formula || 'ccost' }}
           FORMULA_REPOSITORY: ${{ github.event.client_payload.repository || 'mkusaka/ccost' }}
         run: |
-          echo "FORMULA_NAME=$FORMULA_NAME" >> "$GITHUB_ENV"
-          echo "FORMULA_REPOSITORY=$FORMULA_REPOSITORY" >> "$GITHUB_ENV"
-          echo "FORMULA_PATH=Formula/${FORMULA_NAME}.rb" >> "$GITHUB_ENV"
+          {
+            echo "FORMULA_NAME=$FORMULA_NAME"
+            echo "FORMULA_REPOSITORY=$FORMULA_REPOSITORY"
+            echo "FORMULA_PATH=Formula/${FORMULA_NAME}.rb"
+          } >> "$GITHUB_ENV"
+
           if [[ ! -f "Formula/${FORMULA_NAME}.rb" ]]; then
             echo "::error::Missing formula file Formula/${FORMULA_NAME}.rb"
             exit 1
@@ -45,7 +48,7 @@ jobs:
           FORMULA_DARWIN_X64_URL: ${{ github.event.client_payload.darwin_x64_url }}
           FORMULA_DARWIN_X64_SHA256: ${{ github.event.client_payload.darwin_x64_sha256 }}
         run: |
-          ruby <<'RUBY'
+          ruby <<'RB'
           require "base64"
 
           def replace_once(text, pattern, replacement, label, path)
@@ -150,29 +153,29 @@ jobs:
                 )
                 current_text = replace_once(
                   current_text,
-                  /^    sha256 arm64_tahoe: ".*"$/,
-                  %(    sha256 arm64_tahoe: "#{ENV.fetch("FORMULA_ARM64_TAHOE_SHA256")}"),
+                  /^    sha256 arm64_tahoe:\s*".*"$/,
+                  %(    sha256 arm64_tahoe:   "#{ENV.fetch("FORMULA_ARM64_TAHOE_SHA256")}"),
                   "arm64_tahoe_sha256",
                   path,
                 )
                 current_text = replace_once(
                   current_text,
-                  /^    sha256 tahoe: ".*"$/,
-                  %(    sha256 tahoe: "#{ENV.fetch("FORMULA_TAHOE_SHA256")}"),
+                  /^    sha256 tahoe:\s*".*"$/,
+                  %(    sha256 tahoe:         "#{ENV.fetch("FORMULA_TAHOE_SHA256")}"),
                   "tahoe_sha256",
                   path,
                 )
                 current_text = replace_once(
                   current_text,
-                  /^    sha256 arm64_sequoia: ".*"$/,
+                  /^    sha256 arm64_sequoia:\s*".*"$/,
                   %(    sha256 arm64_sequoia: "#{ENV.fetch("FORMULA_ARM64_SEQUOIA_SHA256")}"),
                   "arm64_sequoia_sha256",
                   path,
                 )
                 current_text = replace_once(
                   current_text,
-                  /^    sha256 sequoia: ".*"$/,
-                  %(    sha256 sequoia: "#{ENV.fetch("FORMULA_SEQUOIA_SHA256")}"),
+                  /^    sha256 sequoia:\s*".*"$/,
+                  %(    sha256 sequoia:       "#{ENV.fetch("FORMULA_SEQUOIA_SHA256")}"),
                   "sequoia_sha256",
                   path,
                 )
@@ -182,7 +185,7 @@ jobs:
             end
 
           File.write(path, text)
-          RUBY
+          RB
 
           cat "$FORMULA_PATH"
 
