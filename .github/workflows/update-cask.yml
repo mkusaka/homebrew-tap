@@ -1,9 +1,7 @@
 name: Update Cask
-
 on:
   repository_dispatch:
     types: [update-cask]
-
 jobs:
   update:
     name: Update Cask Formula
@@ -13,8 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          persist-credentials: true
-
+          persist-credentials: false
       - name: Resolve cask path
         env:
           CASK_NAME: ${{ github.event.client_payload.cask || 'keypunch' }}
@@ -25,7 +22,6 @@ jobs:
             echo "::error::Missing cask file Casks/${CASK_NAME}.rb"
             exit 1
           fi
-
       - name: Update cask
         env:
           CASK_VERSION: ${{ github.event.client_payload.version }}
@@ -34,14 +30,17 @@ jobs:
           sed -i "s/version \".*\"/version \"${CASK_VERSION}\"/" "$CASK_PATH"
           sed -i "s/sha256 \".*\"/sha256 \"${CASK_SHA256}\"/" "$CASK_PATH"
           cat "$CASK_PATH"
-
       - name: Commit and push
         env:
           CASK_VERSION: ${{ github.event.client_payload.version }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          gh auth setup-git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add "$CASK_PATH"
           git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "bump ${CASK_NAME} to ${CASK_VERSION}"
           git push
+    timeout-minutes: 60
+permissions: {}

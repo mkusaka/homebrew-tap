@@ -1,9 +1,7 @@
 name: Update Formula
-
 on:
   repository_dispatch:
     types: [update-formula]
-
 jobs:
   update:
     name: Update Formula
@@ -13,8 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          persist-credentials: true
-
+          persist-credentials: false
       - name: Resolve formula path
         env:
           FORMULA_NAME: ${{ github.event.client_payload.formula || 'ccost' }}
@@ -30,7 +27,6 @@ jobs:
             echo "::error::Missing formula file Formula/${FORMULA_NAME}.rb"
             exit 1
           fi
-
       - name: Update formula
         env:
           FORMULA_REPOSITORY: ${{ env.FORMULA_REPOSITORY }}
@@ -188,7 +184,6 @@ jobs:
           RB
 
           cat "$FORMULA_PATH"
-
       - name: Validate formula
         env:
           FORMULA_VERSION: ${{ github.event.client_payload.version }}
@@ -206,14 +201,17 @@ jobs:
             grep -F "$FORMULA_DARWIN_X64_URL" "$FORMULA_PATH"
             grep -F "$FORMULA_DARWIN_X64_SHA256" "$FORMULA_PATH"
           fi
-
       - name: Commit and push
         env:
           FORMULA_VERSION: ${{ github.event.client_payload.version }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          gh auth setup-git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add "$FORMULA_PATH"
           git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "bump ${FORMULA_NAME} to ${FORMULA_VERSION}"
           git push
+    timeout-minutes: 60
+permissions: {}
