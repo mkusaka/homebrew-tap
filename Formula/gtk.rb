@@ -2,18 +2,17 @@ class Gtk < Formula
   desc "BYO-credentials Google Tasks CLI"
   homepage "https://github.com/mkusaka/gtk"
   license "MIT"
-
 on_macos do
   if Hardware::CPU.arm?
-    url "https://github.com/mkusaka/gtk/releases/download/v0.0.1/gtk-0.0.1-darwin-arm64.tar.gz"
-    sha256 "e7387f794e3568a9bc7cc283efe8f5ffa6bb7084efe240cbd52e8c4d5175de2c"
+    url "https://github.com/mkusaka/gtk/releases/download/v0.0.2/gtk-0.0.2-darwin-arm64.tar.gz"
+    sha256 "f4baaac9c56001c8686178920a7d91b95dc3cbef1a414015d7e51aec20bb8a11"
   else
-    url "https://github.com/mkusaka/gtk/releases/download/v0.0.1/gtk-0.0.1-darwin-x64.tar.gz"
-    sha256 "d1e5151e602af8ced9d1667a6e5bb155a127bf2cbeac8e51564be0f16c33610a"
+    url "https://github.com/mkusaka/gtk/releases/download/v0.0.2/gtk-0.0.2-darwin-x64.tar.gz"
+    sha256 "168d2b47530582be9e6924d979f35779675b1940b745c9caaede00d5451cba73"
   end
 end
 
-  version "0.0.1"
+  version "0.0.2"
   head "https://github.com/mkusaka/gtk.git", branch: "main"
 
   head do
