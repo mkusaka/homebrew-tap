@@ -2,18 +2,18 @@ class Ccost < Formula
   desc "Claude Code, Codex, and OpenCode usage cost reporter"
   homepage "https://github.com/mkusaka/ccost"
   # Release automation replaces these placeholders after the first tagged release.
-  url "https://github.com/mkusaka/ccost/archive/refs/tags/v0.1.12.tar.gz"
-  version "0.1.12"
-  sha256 "77c96a9c2d46da2c87462db58c52f2074ce45b57d1f2a3ff1ed877eb24dfd461"
+  url "https://github.com/mkusaka/ccost/archive/refs/tags/v0.1.13.tar.gz"
+  version "0.1.13"
+  sha256 "e53f2afb3ba62a77a477245f59168338d76202ed62f1b2321412754619cef2d8"
   license "MIT"
   head "https://github.com/mkusaka/ccost.git", branch: "main"
 
   bottle do
-    root_url "https://github.com/mkusaka/ccost/releases/download/v0.1.12"
-    sha256 arm64_tahoe:   "7eba979b313d088363499e158e6058952ce59bf41be041688e892795677b919d"
-    sha256 tahoe:         "34cef09689785aa9f1fc354da909470cf542d7ba97feac3a08b16311c340294c"
-    sha256 arm64_sequoia: "69d0de6ef05cbdff72c5f86a4e172487ed4f0db1be6ea8149aba708dd9427698"
-    sha256 sequoia:       "b9f620d0d4140ceafd205ec2b02c0ac7adbce9874a53a99d61be2c24558de168"
+    root_url "https://github.com/mkusaka/ccost/releases/download/v0.1.13"
+    sha256 arm64_tahoe:   "a4f151fdb20b527a669594b8a3f040127263c981381095973729651e0a0e48c2"
+    sha256 tahoe:         "d8c0993dab0ce7bc2dede8c3a70ba834fddfc8e159cd267871a920de19dfa276"
+    sha256 arm64_sequoia: "18acdaa369af4dcf0f557684d2090b558108e1e2ef8940a6744a4ccaa27de666"
+    sha256 sequoia:       "961a730f92f4a1ef20b5467fd55ec4f58d8b283c1a333de08d3d65826d7bdc54"
   end
 
   depends_on "rust" => :build
