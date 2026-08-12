@@ -16,6 +16,7 @@ jobs:
         env:
           FORMULA_NAME: ${{ github.event.client_payload.formula || 'ccost' }}
           FORMULA_REPOSITORY: ${{ github.event.client_payload.repository || 'mkusaka/ccost' }}
+          FORMULA_CONTENTS_B64: ${{ github.event.client_payload.formula_contents_b64 }}
         run: |
           {
             echo "FORMULA_NAME=$FORMULA_NAME"
@@ -23,7 +24,7 @@ jobs:
             echo "FORMULA_PATH=Formula/${FORMULA_NAME}.rb"
           } >> "$GITHUB_ENV"
 
-          if [[ ! -f "Formula/${FORMULA_NAME}.rb" ]]; then
+          if [[ ! -f "Formula/${FORMULA_NAME}.rb" && -z "${FORMULA_CONTENTS_B64:-}" ]]; then
             echo "::error::Missing formula file Formula/${FORMULA_NAME}.rb"
             exit 1
           fi
