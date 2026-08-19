@@ -19,9 +19,10 @@ class Cxtools < Formula
   depends_on "rust" => :build
 
   def install
-    # --locked is required: a fresh resolution drifts the codex-rs
-    # workspace's rama-* crates away from the versions its lockfile pins.
-    system "cargo", "install", "--locked", *std_cargo_args
+    # std_cargo_args already passes --locked; a fresh resolution would
+    # drift the codex-rs workspace's rama-* crates away from the
+    # versions its lockfile pins.
+    system "cargo", "install", *std_cargo_args
   end
 
   test do
