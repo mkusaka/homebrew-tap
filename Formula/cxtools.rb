@@ -25,6 +25,9 @@ class Cxtools < Formula
   end
 
   test do
-    pipe_output("#{bin}/cxtools", "", 0)
+    # cxtools is a stdio MCP server: closing stdin without a completed
+    # initialize handshake makes it exit 1, which is the expected outcome
+    # for this smoke test (it confirms the binary runs and reads stdin).
+    pipe_output("#{bin}/cxtools", "", 1)
   end
 end
