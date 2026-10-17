@@ -14,6 +14,7 @@ brew tap mkusaka/tap
 |---------|-------------|
 | `ccost` | Claude Code, Codex, and OpenCode usage cost reporter |
 | `cxtools` | MCP server exposing OpenAI Codex tools by calling the codex-rs crates in-process |
+| `ghok` | Transparent GitHub CLI wrapper with pre/post hooks and operation normalization |
 | `gtk` | BYO-credentials Google Tasks CLI |
 | `pbm` | Deterministic macOS desktop automation CLI and MCP server |
 | `tk` | Standalone Rust CLI for persistent structured task lists |
@@ -23,6 +24,7 @@ brew tap mkusaka/tap
 ```bash
 brew install mkusaka/tap/ccost
 brew install mkusaka/tap/cxtools
+brew install mkusaka/tap/ghok
 brew install mkusaka/tap/gtk
 brew install mkusaka/tap/pbm
 brew install mkusaka/tap/tk
@@ -30,7 +32,8 @@ brew install mkusaka/tap/tk
 
 Tagged releases publish bottles for Apple Silicon and Intel Macs on macOS
 Sequoia 15 and Tahoe 26. Until the first tagged release is published, or on
-unsupported platforms, you can install from `HEAD`:
+unsupported platforms, you can install from `HEAD` (except `ghok`, which installs
+prebuilt release binaries for macOS and Linux, arm64/amd64, and has no `HEAD` build):
 
 ```bash
 brew install --HEAD mkusaka/tap/ccost
@@ -63,6 +66,7 @@ brew install --cask mkusaka/tap/tabora
 ```bash
 brew uninstall ccost
 brew uninstall cxtools
+brew uninstall ghok
 brew uninstall gtk
 brew uninstall pbm
 brew uninstall tk
