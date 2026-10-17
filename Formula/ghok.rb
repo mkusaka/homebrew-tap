@@ -1,28 +1,28 @@
 class Ghok < Formula
   desc "Transparent GitHub CLI wrapper with pre/post hooks and operation normalization"
   homepage "https://github.com/mkusaka/ghok"
-  version "0.0.14"
+  version "0.0.15"
   license "MIT"
 
   depends_on "gh"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/mkusaka/ghok/releases/download/v0.0.14/ghok_darwin_arm64.tar.gz"
-      sha256 "ff6a84effc25da92c7aba59e449f68f62b494c72c18e90d2a6ab621d453b4c3f"
+      url "https://github.com/mkusaka/ghok/releases/download/v0.0.15/ghok_darwin_arm64.tar.gz"
+      sha256 "78365fb27eae93233c89d3b63f9114b3277bd30ff688ff1c26989ac5b7387f28"
     else
-      url "https://github.com/mkusaka/ghok/releases/download/v0.0.14/ghok_darwin_amd64.tar.gz"
-      sha256 "2d2298fa9eef5d3cb06bd872689f47bf9857a28f66ba9ae10eba4c863faea076"
+      url "https://github.com/mkusaka/ghok/releases/download/v0.0.15/ghok_darwin_amd64.tar.gz"
+      sha256 "5f1a365912ca680c05eaf079e7468e32bfae5b2d33fa57b3febee31120528b84"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/mkusaka/ghok/releases/download/v0.0.14/ghok_linux_arm64.tar.gz"
-      sha256 "77c6d8506bad5a0ffbdcf4f48e805b83e4d197dd8fc7eebaaa760572381a8eeb"
+      url "https://github.com/mkusaka/ghok/releases/download/v0.0.15/ghok_linux_arm64.tar.gz"
+      sha256 "8570eba80f88be886eefd9654987c0bc6acea8bbaa6f76adb16d48363f515f8e"
     else
-      url "https://github.com/mkusaka/ghok/releases/download/v0.0.14/ghok_linux_amd64.tar.gz"
-      sha256 "d40fadd83f56deec3dd136c0cfa385f6615c9cacf624c3a2dd5382f9f592f63a"
+      url "https://github.com/mkusaka/ghok/releases/download/v0.0.15/ghok_linux_amd64.tar.gz"
+      sha256 "1156ddf3a011cb1df2863ff3bcc7ccc9ded038812fce5d1298e2d955491538ef"
     end
   end
 
@@ -40,6 +40,7 @@ class Ghok < Formula
       Without a config gh passes through untouched; create one with:
         ghok config init --scope user
       Then check everything with `ghok doctor`.
+      Docs ship with the binary (offline): `ghok docs`, `ghok docs search "<query>"`, `ghok actions`.
     EOS
   end
 
