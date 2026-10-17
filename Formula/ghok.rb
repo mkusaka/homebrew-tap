@@ -1,28 +1,28 @@
 class Ghok < Formula
   desc "Transparent GitHub CLI wrapper with pre/post hooks and operation normalization"
   homepage "https://github.com/mkusaka/ghok"
-  version "0.0.15"
+  version "0.0.16"
   license "MIT"
 
   depends_on "gh"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/mkusaka/ghok/releases/download/v0.0.15/ghok_darwin_arm64.tar.gz"
-      sha256 "78365fb27eae93233c89d3b63f9114b3277bd30ff688ff1c26989ac5b7387f28"
+      url "https://github.com/mkusaka/ghok/releases/download/v0.0.16/ghok_darwin_arm64.tar.gz"
+      sha256 "7cea4a40b8f88f42de90d69da68aa7bc8d94db065c760c12d691004bfdd4f5d0"
     else
-      url "https://github.com/mkusaka/ghok/releases/download/v0.0.15/ghok_darwin_amd64.tar.gz"
-      sha256 "5f1a365912ca680c05eaf079e7468e32bfae5b2d33fa57b3febee31120528b84"
+      url "https://github.com/mkusaka/ghok/releases/download/v0.0.16/ghok_darwin_amd64.tar.gz"
+      sha256 "5d5349a3be1080885f38233d648b1f15c6e3b5603cd2f3ef6b2fb8cefec57bfb"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/mkusaka/ghok/releases/download/v0.0.15/ghok_linux_arm64.tar.gz"
-      sha256 "8570eba80f88be886eefd9654987c0bc6acea8bbaa6f76adb16d48363f515f8e"
+      url "https://github.com/mkusaka/ghok/releases/download/v0.0.16/ghok_linux_arm64.tar.gz"
+      sha256 "436c703f6139cbdb2bdd216889a07c2a95d11ec3f3053440e531d4a8549954c6"
     else
-      url "https://github.com/mkusaka/ghok/releases/download/v0.0.15/ghok_linux_amd64.tar.gz"
-      sha256 "1156ddf3a011cb1df2863ff3bcc7ccc9ded038812fce5d1298e2d955491538ef"
+      url "https://github.com/mkusaka/ghok/releases/download/v0.0.16/ghok_linux_amd64.tar.gz"
+      sha256 "8afbc123d6ed130c66f645afac5a84f91c9eb1db322d704db04fa56f1d9b6458"
     end
   end
 
