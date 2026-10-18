@@ -8,7 +8,7 @@ cask "joblet" do
   desc "Manage launchd LaunchAgents (scheduled jobs) with an MCP server for AI agents"
   homepage "https://github.com/mkusaka/joblet"
 
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
 
   app "Joblet.app"
 
