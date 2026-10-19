@@ -12,12 +12,6 @@ cask "joblet" do
 
   app "Joblet.app"
 
-  caveats <<~EOS
-    Joblet is currently ad-hoc signed and not notarized. Allow the first launch in
-    System Settings > Privacy & Security > Open Anyway, or run:
-      xattr -dr com.apple.quarantine #{appdir}/Joblet.app
-  EOS
-
   zap trash: [
     "~/Library/Preferences/io.github.mkusaka.Joblet.plist",
   ]
