@@ -1,7 +1,7 @@
 cask "joblet" do
   # Release automation replaces these placeholders after the first notarized tag.
-  version "0.0.3"
-  sha256 "5b26fd33aac38a478e87b290ff0cf7fbb18644a82b7ff6735236addfa2fdad03"
+  version "0.0.4"
+  sha256 "f95a649e9b22cbec2cbfd7868b49149de4d12743970f8c3315cb21f0ea380f92"
 
   url "https://github.com/mkusaka/joblet/releases/download/v#{version}/Joblet.zip"
   name "Joblet"
