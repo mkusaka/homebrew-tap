@@ -1,7 +1,7 @@
 cask "gain" do
   # Release automation replaces these placeholders after the first notarized tag.
-  version "0.4.1"
-  sha256 "a7edea5511bdb6fa0b44ad4e83d5f04a5b144eef81485650d6f91cecad7a4434"
+  version "0.4.2"
+  sha256 "6f5eee12e5ed00d9382b29d53c3bac473af97106482f7c9417ab66660c95fa78"
 
   url "https://github.com/mkusaka/gain/releases/download/v#{version}/gain-#{version}-darwin-universal.tar.gz"
   name "gain"
