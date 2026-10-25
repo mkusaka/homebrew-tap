@@ -12,17 +12,21 @@ cask "gain" do
 
   binary "gain"
 
-  # `gain agent install` registers this LaunchAgent; don't leave it pointing at a removed binary.
-  uninstall launchctl: "com.github.mkusaka.gain.agent",
-            trash:     "~/Library/LaunchAgents/com.github.mkusaka.gain.agent.plist"
-
-  # The vault (~/.local/share/gain) is deliberately kept: it is the only copy of the App keys.
-  zap trash: "~/Library/Logs/gain-agent.log"
+  # Upgrades leave the agent running (unlocked, on the old binary) instead of stopping it; it
+  # switches to the new binary at the next login or `gain agent install`. Zap removes the
+  # LaunchAgent. The vault (~/.local/share/gain) is deliberately kept: it is the only copy of the App keys.
+  zap launchctl: "com.github.mkusaka.gain.agent",
+      trash:     [
+        "~/Library/LaunchAgents/com.github.mkusaka.gain.agent.plist",
+        "~/Library/Logs/gain-agent.log",
+      ]
 
   caveats <<~EOS
     Start the agent now and at every login, then unlock it once per login:
       gain agent install
       gain agent unlock
-    After `brew upgrade --cask gain`, run both again so the agent runs the new binary.
+    Upgrades keep the running agent; it moves to the new binary at the next login
+    (or run `gain agent install` and unlock again). `gain agent status` shows its version.
+    Uninstall with `brew uninstall --zap gain` to also remove the LaunchAgent.
   EOS
 end
