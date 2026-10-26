@@ -1,8 +1,8 @@
 cask "gain" do
   # Source of truth: mkusaka/gain packaging/homebrew/gain.rb. Its release.yml fills in version and
   # sha256 and pushes this file to the tap; edits made in the tap are overwritten.
-  version "0.5.0"
-  sha256 "dd9ed9662e8d2c4d8c1d6c737bfac28a2f1fb50ad7716276757744d9a724aab3"
+  version "0.6.0"
+  sha256 "043e8340b6cdaf3456dc05c7827228eb552b5debf9dd187f59523a06d5c2d6ae"
 
   url "https://github.com/mkusaka/gain/releases/download/v#{version}/gain-#{version}-darwin-universal.tar.gz"
   name "gain"
