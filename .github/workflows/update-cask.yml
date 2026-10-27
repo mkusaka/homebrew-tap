@@ -43,4 +43,8 @@ jobs:
           git commit -m "bump ${CASK_NAME} to ${CASK_VERSION}"
           git push
     timeout-minutes: 60
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 permissions: {}

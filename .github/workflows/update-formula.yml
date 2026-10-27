@@ -215,4 +215,8 @@ jobs:
           git commit -m "bump ${FORMULA_NAME} to ${FORMULA_VERSION}"
           git push
     timeout-minutes: 60
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 permissions: {}
