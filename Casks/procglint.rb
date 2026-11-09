@@ -1,7 +1,7 @@
 cask "procglint" do
   # Release automation replaces these placeholders after the first notarized tag.
-  version "1.1.1"
-  sha256 "1d77e2e3bd1bd45e3f11b46d43222844ed3822a80c8ee138f04c30c7c1944d6b"
+  version "1.2.1"
+  sha256 "add2802e0d59aa8855dba8e20d1761cd02cca87685b698dc5ea7e22ff6849c0a"
 
   url "https://github.com/mkusaka/procglint/releases/download/v#{version}/Procglint-#{version}-arm64.zip"
   name "Procglint"
